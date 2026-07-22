@@ -53,6 +53,15 @@ The dashboard provides insights into premium trends, claim distribution, policy 
 
 ---
 
+## 🚀 How to Use
+
+1. Download the `.pbix` file from this repository
+2. Open it using Microsoft Power BI Desktop
+3. If prompted, update the data source path
+4. Refresh the data to view the latest insights.
+
+---
+
 ## 📸 Dashboard Preview
 
 ### 📊 Dashboard 1
@@ -62,15 +71,6 @@ The dashboard provides insights into premium trends, claim distribution, policy 
 
 ### 📊 Dashboard 3
 ![Dashboard 3](Dashboard-images/dashboard3%20(1).png)
-
----
-
-## 🚀 How to Use
-
-1. Download the `.pbix` file from this repository
-2. Open it using Microsoft Power BI Desktop
-3. If prompted, update the data source path
-4. Refresh the data to view the latest insights.
 
 ---
 
