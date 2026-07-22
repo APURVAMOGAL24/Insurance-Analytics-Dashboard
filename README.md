@@ -54,10 +54,10 @@ The dashboard provides insights into premium trends, claim distribution, policy 
 ---
 
 ## 🚀 How to Use
-1. Download the repository  
-2. Open the Power BI file / PBIP project  
-3. Refresh dataset if needed  
-4. Explore visuals  
+1. Clone or download this repository  
+2. Open the `.pbip` file in Power BI Desktop  
+3. Ensure `Report` and `SemanticModel` folders are present  
+4. Refresh data if needed   
 
 ---
 
