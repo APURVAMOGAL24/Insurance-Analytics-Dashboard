@@ -53,6 +53,18 @@ The dashboard provides insights into premium trends, claim distribution, policy 
 
 ---
 
+## 📸 Dashboard Preview
+
+### 📊 Dashboard 1
+![Dashboard 1](Dashboard-images/dashboard1%20(1).png)
+### 📊 Dashboard 2
+![Dashboard 2](Dashboard-images/dashboard2%20(1).png)
+
+### 📊 Dashboard 3
+![Dashboard 3](Dashboard-images/dashboard3%20(1).png)
+
+---
+
 ## 🚀 How to Use
 1. Clone or download this repository  
 2. Open the `.pbip` file in Power BI Desktop  
