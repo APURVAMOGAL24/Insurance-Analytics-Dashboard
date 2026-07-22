@@ -1,0 +1,165 @@
+table InsuranceData
+	lineageTag: 2538de92-70ca-492f-b045-08a170bd178d
+
+	column PolicyNumber
+		dataType: string
+		lineageTag: de035422-a4c1-4853-af49-865751e8ac63
+		summarizeBy: none
+		sourceColumn: PolicyNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerID
+		dataType: string
+		lineageTag: e64ca466-eb2b-40ab-ac4f-0f82ebb08919
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Gender
+		dataType: string
+		lineageTag: 28e9a73d-76e1-487d-85e5-7302f2f640b3
+		summarizeBy: none
+		sourceColumn: Gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column Age
+		dataType: int64
+		formatString: 0
+		lineageTag: d8725f22-2821-45c8-8f2c-a23cf184ecb2
+		summarizeBy: sum
+		sourceColumn: Age
+
+		annotation SummarizationSetBy = Automatic
+
+	column PolicyType
+		dataType: string
+		lineageTag: dd26ea00-a79f-436c-94b6-22ef68e1a2d0
+		summarizeBy: none
+		sourceColumn: PolicyType
+
+		annotation SummarizationSetBy = Automatic
+
+	column PolicyStartDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 79deb616-352b-4ea0-8918-e6da1a11fda1
+		summarizeBy: none
+		sourceColumn: PolicyStartDate
+
+		variation Variation
+			isDefault
+			relationship: b59d264e-afd9-4348-993c-d199ad307038
+			defaultHierarchy: LocalDateTable_21a08361-b552-4b67-9746-cdfcb530f963.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PolicyEndDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0ff0f90f-a79c-4e9e-9d61-765b82ba2565
+		summarizeBy: none
+		sourceColumn: PolicyEndDate
+
+		variation Variation
+			isDefault
+			relationship: 1baf62e0-e342-42b5-88a3-06c9f29da035
+			defaultHierarchy: LocalDateTable_b8be1a36-2533-4368-8f15-6eb59ebfad16.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PremiumAmount
+		dataType: double
+		lineageTag: ca47782b-c132-4f22-b48b-2936b4b2e523
+		summarizeBy: sum
+		sourceColumn: PremiumAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CoverageAmount
+		dataType: double
+		lineageTag: 9427ebe0-f95a-4e14-869f-404cf6f42aa4
+		summarizeBy: sum
+		sourceColumn: CoverageAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ClaimNumber
+		dataType: string
+		lineageTag: 8c5a812e-e203-461a-b43b-40bf4795e989
+		summarizeBy: none
+		sourceColumn: ClaimNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimDate
+		dataType: string
+		lineageTag: d601e281-939e-48c4-9fc7-5d3af42b6bd8
+		summarizeBy: none
+		sourceColumn: ClaimDate
+
+		annotation SummarizationSetBy = Automatic
+
+	column ClaimAmount
+		dataType: double
+		lineageTag: 8be90cf9-d991-4d4d-ad47-5b363473c682
+		summarizeBy: sum
+		sourceColumn: ClaimAmount
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ClaimStatus
+		dataType: string
+		lineageTag: 05c4c47e-31c9-45eb-a993-298dbb847b65
+		summarizeBy: none
+		sourceColumn: ClaimStatus
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Age group'
+		dataType: string
+		lineageTag: a73c18be-a168-47d1-ae3e-a293595ae7ed
+		summarizeBy: none
+		sourceColumn: Age group
+
+		annotation SummarizationSetBy = Automatic
+
+	column Active/Inactive
+		dataType: string
+		lineageTag: d42ce6a7-931c-45ac-9198-0b2dafe9c06f
+		summarizeBy: none
+		sourceColumn: Active/Inactive
+
+		annotation SummarizationSetBy = Automatic
+
+	partition InsuranceData = m
+		mode: import
+		source =
+				let
+				    Source = Sql.Databases("DESKTOP-6GCQEN7"),
+				    insurancedb = Source{[Name="insurancedb"]}[Data],
+				    dbo_InsuranceData = insurancedb{[Schema="dbo",Item="InsuranceData"]}[Data],
+				    #"Replaced Value" = Table.ReplaceValue(dbo_InsuranceData,"NULL",null,Replacer.ReplaceValue,{"ClaimDate"}),
+				    #"Added Conditional Column" = Table.AddColumn(#"Replaced Value", "Age group", each if [Age] <= 24 then "Younger Adult" else if [Age] <= 60 then "Adult" else if [Age] <= 87 then "Elder" else null),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Added Conditional Column",{{"Age group", type text}}),
+				    #"Reordered Columns" = Table.ReorderColumns(#"Changed Type",{"PolicyNumber", "CustomerID", "Gender", "Age", "Age group", "PolicyType", "PolicyStartDate", "PolicyEndDate", "PremiumAmount", "CoverageAmount", "ClaimNumber", "ClaimDate", "ClaimAmount", "ClaimStatus"}),
+				    #"Added Conditional Column1" = Table.AddColumn(#"Reordered Columns", "Active/Inactive", each if [PolicyEndDate] <= #date(2024, 10, 12) then "Inactive" else "Active")
+				in
+				    #"Added Conditional Column1"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+
